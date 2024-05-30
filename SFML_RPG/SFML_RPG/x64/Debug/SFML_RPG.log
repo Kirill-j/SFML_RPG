@@ -1,0 +1,12 @@
+﻿  EditorState.cpp
+  Game.cpp
+  GameState.cpp
+  Gui.cpp
+  MainMenuState.cpp
+  PauseMenu.cpp
+  SettingsState.cpp
+C:\Users\lapsa\Desktop\practiceISU\SFML_RPG\SFML_RPG\SettingsState.cpp(82,3): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+  State.cpp
+  main.cpp
+  Generating Code...
+  SFML_RPG.vcxproj -> C:\Users\lapsa\Desktop\practiceISU\SFML_RPG\x64\Debug\SFML_RPG.exe

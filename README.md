@@ -1,2 +1,2 @@
-# SFML_RPG
-SFML RPG
+# practiceISU
+Practice at ISU
