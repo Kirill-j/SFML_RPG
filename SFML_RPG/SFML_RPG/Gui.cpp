@@ -29,17 +29,18 @@ const float gui::p2pY(const float perc, const sf::VideoMode& vm)
 	return std::floor(static_cast<float>(vm.height) * (perc / 100.f));
 }
 
-const unsigned gui::calcCharSize(const sf::VideoMode& vm)
+const unsigned gui::calcCharSize(const sf::VideoMode& vm, const unsigned modifier)
 {
 	/*
 	 * Calculating the character size for text using the current resolution and a constant.
 	 *
 	 * @param       sf::VideoMode& vm           The curren videomode of the window (resolution).
+	 * @param       unsigned modifier           Use to modifythe character size in more custom way.
 	 * 
 	 * @return      unsigned					The calculated character size value.
 	 */
 
-	return static_cast<unsigned>((vm.width + vm.height) / 60);
+	return static_cast<unsigned>((vm.width + vm.height) / modifier);
 }
 
 gui::Button::Button(float x, float y, float width, float height,
@@ -332,7 +333,7 @@ gui::TextureSelector::TextureSelector(float x, float y, float width, float heigh
 		&font, text, 16,
 		sf::Color(255, 255, 255, 200), sf::Color(255, 255, 255, 250), sf::Color(255, 255, 255, 50),
 		sf::Color(70, 70, 70, 200), sf::Color(20, 20, 20, 250), sf::Color(150, 150, 150, 50)
-	);;
+	);
 }
 
 gui::TextureSelector::~TextureSelector()
@@ -383,13 +384,12 @@ void gui::TextureSelector::update(const sf::Vector2i& mousePosWindow, const floa
 
 	if (!this->hidden)
 	{
-		if (this->bounds.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosWindow)))
-				this->active = true;
-		else
-			this->active = false;
+		this->active = false;
 
-		if (this->active)
+		if (this->bounds.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosWindow)))
 		{
+			this->active = true;
+
 			this->mousePosGrid.x = (mousePosWindow.x - static_cast<int>(this->bounds.getPosition().x)) / static_cast<unsigned>(this->gridSize);
 			this->mousePosGrid.y = (mousePosWindow.y - static_cast<int>(this->bounds.getPosition().y)) / static_cast<unsigned>(this->gridSize);
 

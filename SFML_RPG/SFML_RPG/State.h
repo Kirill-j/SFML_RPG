@@ -13,11 +13,11 @@ class StateData
 public:
 	StateData() {};
 
-	// Variables
+	//Variables
 	float gridSize;
 	sf::RenderWindow* window;
 	GraphicsSettings* gfxSettings;
-	std::map <std::string, int>* supportedKeys;
+	std::map<std::string, int>* supportedKeys;
 	std::stack<State*>* states;
 };
 
@@ -42,21 +42,21 @@ protected:
 	sf::Vector2f mousePosView;
 	sf::Vector2i mousePosGrid;
 
-	// Resources
+	//Resources
 	std::map<std::string, sf::Texture> textures;
 
-	// Functions
+	//Functions
 	virtual void initKeybinds() = 0;
 
 public:
 	State(StateData* state_data);
 	virtual ~State();
 
-	// Acccessors
+	//Accessors
 	const bool& getQuit() const;
 	const bool getKeytime();
 
-	// Functions
+	//Functions	
 	void endState();
 	void pauseState();
 	void unpausedState();

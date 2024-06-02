@@ -7,22 +7,6 @@ void MainMenuState::initVariables()
 
 }
 
-void MainMenuState::initBackground()
-{
-	this->background.setSize(
-		sf::Vector2f
-		(
-			static_cast<float>(this->window->getSize().x),
-			static_cast<float>(this->window->getSize().y)
-		)
-	);
-	
-	if (!this->backgroundTexture.loadFromFile("Resources/Images/Backgrounds/main_menu_background.png"))
-		throw "ERROR::MAIN_MENU_STATE::FAILED_TO_LOAD_BACKGROUND_TEXTURE";
-
-	this->background.setTexture(&this->backgroundTexture);
-}
-
 void MainMenuState::initFonts()
 {
 	if (!this->font.loadFromFile("Fonts/Dosis-Light.ttf"))
@@ -49,20 +33,46 @@ void MainMenuState::initKeybinds()
 	ifs.close();
 }
 
-void MainMenuState::initButtons()
+void MainMenuState::initGui()
 {
 	const sf::VideoMode& vm = stateData->gfxSettings->resolution;
 
+	// Background
+	this->background.setSize(
+		sf::Vector2f
+		(
+			static_cast<float>(vm.width),
+			static_cast<float>(vm.height)
+		)
+	);
+
+	if (!this->backgroundTexture.loadFromFile("Resources/Images/Backgrounds/main_menu_background1.png"))
+		throw "ERROR::MAIN_MENU_STATE::FAILED_TO_LOAD_BACKGROUND_TEXTURE";
+
+	this->background.setTexture(&this->backgroundTexture);
+
+	// Button background
+	this->btnBackground.setSize(
+		sf::Vector2f(
+			static_cast<float>(vm.width / 5),
+			static_cast<float>(vm.height)
+		)
+	);
+
+	this->btnBackground.setPosition(gui::p2pX(6.5f, vm), 0.f);
+	this->btnBackground.setFillColor(sf::Color(10, 10, 10, 220));
+
+	// Buttons
 	this->buttons["GAME_STATE"] = new gui::Button(
-		gui::p2pX(7.3f, vm), gui::p2pX(19.5f, vm),
+		gui::p2pX(7.3f, vm), gui::p2pX(15.5f, vm),
 		gui::p2pX(18.3f, vm), gui::p2pY(9.7f, vm),
 		&this->font, "New Game", gui::calcCharSize(vm),
 		sf::Color(70, 70, 70, 240), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
 		sf::Color(70, 70, 70, 0), sf::Color(20, 20, 20, 0), sf::Color(150, 150, 150, 0)
 		);
 
-	this->buttons["SETTINGS_STATE"] = new gui::Button(
-		gui::p2pX(7.3f, vm), gui::p2pY(32.5f, vm),
+	this->buttons["SETTINGS_STATE"] = new gui::Button( 
+		gui::p2pX(7.3f, vm), gui::p2pY(36.4f, vm),
 		gui::p2pX(18.3f, vm), gui::p2pY(9.7f, vm),
 		&this->font, "Settings", gui::calcCharSize(vm),
 		sf::Color(70, 70, 70, 240), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
@@ -86,15 +96,33 @@ void MainMenuState::initButtons()
 	);
 }
 
+void MainMenuState::resetGui()
+{
+	/*
+	* Clears the GUI elements and re-initialises thwe GUI.
+	*
+	* @return void
+	*/
+
+	auto it = this->buttons.begin();
+	for (it = this->buttons.begin(); it != this->buttons.end(); ++it)
+	{
+		delete it->second;
+	}
+	this->buttons.clear();
+
+	this->initGui();
+}
+
 
 MainMenuState::MainMenuState(StateData* state_data)
 	: State(state_data)
 {
-	this->initBackground();
 	this->initVariables();
 	this->initFonts();
 	this->initKeybinds();
-	this->initButtons();
+	this->initGui();
+	this->resetGui();
 }
 
 MainMenuState::~MainMenuState()
@@ -168,6 +196,8 @@ void MainMenuState::render(sf::RenderTarget* target)
 		target = this->window;
 
 	target->draw(this->background);
+
+	target->draw(this->btnBackground);
 
 	this->renderButtons(*target);
 

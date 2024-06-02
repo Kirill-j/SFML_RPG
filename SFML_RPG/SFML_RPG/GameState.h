@@ -5,11 +5,15 @@
 #include "PauseMenu.h"
 #include "TileMap.h"
 #include "PlayerGUI.h"
+#include "Sword.h"
+#include "Bow.h"
 
 class PauseMenu;
 class Player;
 class TileMap;
 class PlayerGUI;
+class Sword;
+class Bow;
 class sf::View;
 class sf::Font;
 class sf::RenderTexture;
@@ -19,11 +23,14 @@ class GameState :
 {
 private:
     sf::View view;
+    sf::Vector2i viewGridPosition;
     sf::RenderTexture renderTexture;
     sf::Sprite renderSprite;
 
     sf::Font font;
     PauseMenu* pmenu;
+
+    sf::Shader core_shader;
 
     Player* player;
     PlayerGUI* playerGUI;
@@ -38,6 +45,7 @@ private:
     void initFonts();
     void initTextures();
     void initPauseMenu();
+    void initShaders();
     void initPlayers();
     void initPlayerGUI();
     void initTleMap();

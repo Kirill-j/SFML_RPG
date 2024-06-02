@@ -71,9 +71,18 @@ void GameState::initTextures()
 
 void GameState::initPauseMenu()
 {
-	this->pmenu = new PauseMenu(*this->window, this->font);
+	const sf::VideoMode& vm = stateData->gfxSettings->resolution;
+	this->pmenu = new PauseMenu(this->stateData->gfxSettings->resolution, this->font);
 
-	this->pmenu->addButton("QUIT", 600.f, "Quit");
+	this->pmenu->addButton("QUIT", gui::p2pY(78.f, vm), gui::p2pX(18.3f, vm), gui::p2pY(9.7f, vm), gui::calcCharSize(vm), "Quit");
+}
+
+void GameState::initShaders()
+{
+	if (!this->core_shader.loadFromFile("vertex_shader.vert", "fragment_shader.frag")) 
+	{
+		std::cout << "ERROR::GAMESTATE::COULD NOT LOAD SHADER." << "\n";
+	}
 }
 
 void GameState::initPlayers()
@@ -83,13 +92,12 @@ void GameState::initPlayers()
 
 void GameState::initPlayerGUI()
 {
-	this->playerGUI = new PlayerGUI(this->player);
+	this->playerGUI = new PlayerGUI(this->player, this->stateData->gfxSettings->resolution);
 }
 
 void GameState::initTleMap()
 {
-	this->tileMap = new TileMap(this->stateData->gridSize, 100, 100, "Resources/Images/Tiles/tilesheet.png");
-	this->tileMap->loadFromFile("test.slmp");
+		this->tileMap = new TileMap("test.slmp");
 }
 
 // Constr / Destr
@@ -102,6 +110,7 @@ GameState::GameState(StateData* state_data)
 	this->initFonts();
 	this->initTextures();
 	this->initPauseMenu();
+	this->initShaders();
 
 	this->initPlayers();
 	this->initPlayerGUI();
@@ -119,7 +128,29 @@ GameState::~GameState()
 // Functions
 void GameState::updateView(const float& dt)
 {
-	this->view.setCenter(std::floor(this->player->getPosition().x), std::floor(this->player->getPosition().y));
+	this->view.setCenter(
+		std::floor(this->player->getPosition().x + (static_cast<float>(this->mousePosWindow.x) - static_cast<float>(this->stateData->gfxSettings->resolution.width / 2)) / 10.f), 
+		std::floor(this->player->getPosition().y + (static_cast<float>(this->mousePosWindow.y) - static_cast<float>(this->stateData->gfxSettings->resolution.height / 2)) / 10.f)
+	);
+
+	if (this->tileMap->getMaxSizeF().x >= this->view.getSize().x)
+	{
+		if (this->view.getCenter().x - this->view.getSize().x / 2.f < 0.f)
+			this->view.setCenter(0.f + this->view.getSize().x / 2.f, this->view.getCenter().y);
+		else if (this->view.getCenter().x + this->view.getSize().x / 2.f > this->tileMap->getMaxSizeF().x)
+			this->view.setCenter(this->tileMap->getMaxSizeF().x - this->view.getSize().x / 2.f, this->view.getCenter().y);
+	}
+
+	if (this->tileMap->getMaxSizeF().y >= this->view.getSize().y)
+	{
+		if (this->view.getCenter().y - this->view.getSize().y / 2.f < 0.f)
+			this->view.setCenter(this->view.getCenter().x, 0.f + this->view.getSize().y / 2.f);
+		else if (this->view.getCenter().y - this->view.getSize().y / 2.f > this->tileMap->getMaxSizeF().y)
+			this->view.setCenter(this->view.getCenter().x, this->tileMap->getMaxSizeF().y - this->view.getSize().y / 2.f);
+	}
+
+	this->viewGridPosition.x = static_cast<int>(this->view.getCenter().x) / static_cast<int>(this->stateData->gridSize);
+	this->viewGridPosition.y = static_cast<int>(this->view.getCenter().y) / static_cast<int>(this->stateData->gridSize);
 }
 
 void GameState::updateInput(const float& dt)
@@ -141,14 +172,10 @@ void GameState::updatePlayerInput(const float& dt)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_LEFT"))))
 	{
 		this->player->move(-1.f, 0.f, dt);
-		if (this->getKeytime())
-			this->player->loseEXP(2);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_RIGHT"))))
 	{
 		this->player->move(1.f, 0.f, dt);
-		if (this->getKeytime())
-			this->player->gainEXP(10);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_UP"))))
 	{
@@ -191,7 +218,7 @@ void GameState::update(const float& dt)
 		
 		this->updateTileMap(dt);
 
-		this->player->update(dt);
+		this->player->update(dt, this->mousePosView);
 
 		this->playerGUI->update(dt);
 	}
@@ -210,11 +237,18 @@ void GameState::render(sf::RenderTarget* target)
 	this->renderTexture.clear();
 
 	this->renderTexture.setView(this->view);
-	this->tileMap->render(this->renderTexture, this->player->getGridPosition(static_cast<int>(this->stateData->gridSize)));
 
-	this->player->render(this->renderTexture);
+	this->tileMap->render(
+		this->renderTexture,
+		this->viewGridPosition,
+		&this->core_shader,
+		this->player->getCenter(),
+		false
+	);
 
-	this->tileMap->renderDeferred(this->renderTexture);
+	this->player->render(this->renderTexture, &this->core_shader, false);
+
+	this->tileMap->renderDeferred(this->renderTexture, &this->core_shader, this->player->getCenter());
 
 	// Render GUI
 	this->renderTexture.setView(this->renderTexture.getDefaultView());

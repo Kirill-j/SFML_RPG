@@ -31,6 +31,15 @@
     <Filter Include="Map">
       <UniqueIdentifier>{784ea4cf-0be3-4ca4-aad2-fc86fb3d20d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Items">
+      <UniqueIdentifier>{c054f73c-8aac-4a08-a779-30ee5333e7d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Items\MeleeWeapon">
+      <UniqueIdentifier>{8bd169c4-2f9d-4096-8946-6f490c83d817}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Items\RangedWeapon">
+      <UniqueIdentifier>{89e88ff7-6706-479d-a594-b99e603a9b13}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -93,6 +102,21 @@
     <ClCompile Include="PlayerGUI.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="MeleeWeapon.cpp">
+      <Filter>Items\MeleeWeapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Sword.cpp">
+      <Filter>Items\MeleeWeapon</Filter>
+    </ClCompile>
+    <ClCompile Include="RangedWeapon.cpp">
+      <Filter>Items\RangedWeapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Bow.cpp">
+      <Filter>Items\RangedWeapon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameState.h">
@@ -152,5 +176,28 @@
     <ClInclude Include="PlayerGUI.h">
       <Filter>GUI</Filter>
     </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="MeleeWeapon.h">
+      <Filter>Items\MeleeWeapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Sword.h">
+      <Filter>Items\MeleeWeapon</Filter>
+    </ClInclude>
+    <ClInclude Include="RangedWeapon.h">
+      <Filter>Items\RangedWeapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Bow.h">
+      <Filter>Items\RangedWeapon</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="fragment_shader.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="vertex_shader.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

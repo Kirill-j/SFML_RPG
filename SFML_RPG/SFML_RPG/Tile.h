@@ -9,13 +9,13 @@ private:
 
 
 protected:
-	sf::RectangleShape shape;
+	sf::Sprite shape;
 	bool collision;
 	short type;
 
 public:
 	Tile();
-	Tile(int grid_x, int grid_Yy, float gridSizeF, const sf::Texture& texture, const sf::IntRect& texture_rect,
+	Tile(int grid_x, int grid_Y, float gridSizeF, const sf::Texture& texture, const sf::IntRect& texture_rect,
 		bool collision = false, short type = TileTypes::DEFAULT);
 	virtual ~Tile();
 
@@ -30,7 +30,7 @@ public:
 	const std::string getAsString() const;
 	
 	void update();
-	void render(sf::RenderTarget& target);
+	void render(sf::RenderTarget& target, sf::Shader* shader = NULL, const sf::Vector2f playerPosition = sf::Vector2f());
 };
 
 #endif

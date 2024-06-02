@@ -1,3 +1,4 @@
+
 #include "stdafx.h"
 #include "State.h"
 
@@ -19,7 +20,7 @@ State::~State()
 
 }
 
-// Accessors
+//Accessors
 const bool& State::getQuit() const
 {
 	return this->quit;
@@ -36,7 +37,7 @@ const bool State::getKeytime()
 	return false;
 }
 
-// Functions
+//Functions
 void State::endState()
 {
 	this->quit = true;
@@ -61,11 +62,11 @@ void State::updateMousePositions(sf::View* view)
 		this->window->setView(*view);
 
 	this->mousePosView = this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window));
-	this->mousePosGrid = 
+	this->mousePosGrid =
 		sf::Vector2i(
 			static_cast<int>(this->mousePosView.x) / static_cast<int>(this->gridSize),
 			static_cast<int>(this->mousePosView.y) / static_cast<int>(this->gridSize)
-	);
+		);
 
 	this->window->setView(this->window->getDefaultView());
 }
@@ -75,4 +76,3 @@ void State::updateKeytime(const float& dt)
 	if (this->keytime < this->keytimeMax)
 		this->keytime += 100.f * dt;
 }
-

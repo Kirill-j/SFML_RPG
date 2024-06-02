@@ -1,5 +1,6 @@
-#include "stdafx.h"
-#include "GraphicsSettings.h"
+
+#include"stdafx.h"
+#include"GraphicsSettings.h"
 
 GraphicsSettings::GraphicsSettings()
 {
@@ -12,7 +13,7 @@ GraphicsSettings::GraphicsSettings()
 	this->videoModes = sf::VideoMode::getFullscreenModes();
 }
 
-// Functions
+//Functions
 void GraphicsSettings::saveToFile(const std::string path)
 {
 	std::ofstream ofs(path);
@@ -20,7 +21,7 @@ void GraphicsSettings::saveToFile(const std::string path)
 	if (ofs.is_open())
 	{
 		ofs << this->title;
-		ofs << this->resolution.width << " " << resolution.height;
+		ofs << this->resolution.width << " " << this->resolution.height;
 		ofs << this->fullscreen;
 		ofs << this->frameRateLimit;
 		ofs << this->verticalSync;
@@ -37,7 +38,7 @@ void GraphicsSettings::loadFromFile(const std::string path)
 	if (ifs.is_open())
 	{
 		std::getline(ifs, this->title);
-		ifs >> this->resolution.width >> resolution.height;
+		ifs >> this->resolution.width >> this->resolution.height;
 		ifs >> this->fullscreen;
 		ifs >> this->frameRateLimit;
 		ifs >> this->verticalSync;

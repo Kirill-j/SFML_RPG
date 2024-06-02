@@ -44,7 +44,7 @@ const bool MovementComponent::getState(const short unsigned state) const
 
 	case MOVING_LEFT:
 
-		if (this->velocity.x <= 0.f)
+		if (this->velocity.x < 0.f)
 			return true;
 		break;
 
