@@ -31,6 +31,7 @@ private:
     sf::RectangleShape selectorRect;
 
     gui::TextureSelector* textureSelector;
+    gui::TextureSelector* textureSelector2;
 
     sf::IntRect textureRect;
     bool colllision;

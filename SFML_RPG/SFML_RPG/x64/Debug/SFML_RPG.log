@@ -1,13 +1,6 @@
 ﻿  EditorState.cpp
   Game.cpp
-  GameState.cpp
-  Gui.cpp
   MainMenuState.cpp
-  PauseMenu.cpp
-  PlayerGUI.cpp
-C:\Users\lapsa\Desktop\SFML_RPG\SFML_RPG\SFML_RPG\PlayerGUI.cpp(33,40): warning C4305: аргумент: усечение из "double" в "const float"
-  SettingsState.cpp
-C:\Users\lapsa\Desktop\SFML_RPG\SFML_RPG\SFML_RPG\SettingsState.cpp(82,3): warning C4267: аргумент: преобразование из "size_t" в "unsigned int"; возможна потеря данных
   main.cpp
   Создание кода...
   SFML_RPG.vcxproj -> C:\Users\lapsa\Desktop\SFML_RPG\SFML_RPG\x64\Debug\SFML_RPG.exe
